@@ -1,0 +1,255 @@
+Perfect 👍 You’ve done an excellent job summarizing **JavaScript’s Execution Context** and **Call Stack** in your handwritten notes — the concepts are correctly represented. Let’s now convert that into a **clean, professional documentation file** that you can safely add to VS Code and push to GitHub.
+
+Below is a complete, verified Markdown version of your notes (with corrected terminology and examples).
+
+---
+
+# 🧠 JavaScript Execution Context & Call Stack
+
+---
+
+## ⚙️ What is an Execution Context?
+
+> **Execution Context** is the environment in which JavaScript code is executed.
+> It defines what variables, functions, and objects are accessible at a given time.
+
+JavaScript is **single-threaded**, meaning it executes one command at a time in a single call stack.
+
+---
+
+## 🧩 Types of Execution Context
+
+1. **Global Execution Context (GEC)**
+
+   * Created when a JS file first runs.
+   * Responsible for executing global code.
+   * `this` keyword refers to the global object (`window` in browser / `{}` in Node).
+
+2. **Function Execution Context (FEC)**
+
+   * Created each time a function is invoked.
+   * Each function has its own execution context.
+
+3. **Eval Execution Context (rarely used)**
+
+   * Created when code runs inside an `eval()` function.
+
+---
+
+## 🧠 Phases of Execution Context
+
+Each Execution Context has **two phases**:
+
+1. **Memory Creation Phase (Hoisting Phase)**
+
+   * Memory is allocated for variables and functions.
+   * Variables are initialized as `undefined`.
+   * Functions are fully hoisted with their definitions.
+
+2. **Execution Phase**
+
+   * Code is executed line-by-line.
+   * Variable assignments and function calls happen here.
+
+---
+
+### 🧮 Example
+
+```js
+let val1 = 10;
+let val2 = 5;
+
+function addNum(num1, num2) {
+  let total = num1 + num2;
+  return total;
+}
+
+let result1 = addNum(val1, val2);
+let result2 = addNum(4, 2);
+```
+
+---
+
+### 🧩 Step-by-Step Breakdown
+
+#### 1️⃣ Global Execution Context
+
+**Memory Phase**
+
+```js
+val1 = undefined
+val2 = undefined
+addNum = function() {...}
+result1 = undefined
+result2 = undefined
+```
+
+**Execution Phase**
+
+```js
+val1 = 10
+val2 = 5
+addNum → function reference
+result1 = addNum(val1, val2)
+```
+
+---
+
+#### 2️⃣ Function Execution Context (when `addNum` is called)
+
+**Memory Phase**
+
+```js
+num1 = undefined
+num2 = undefined
+total = undefined
+```
+
+**Execution Phase**
+
+```js
+num1 = 10
+num2 = 5
+total = 15
+return total
+```
+
+After execution, the FEC is **deleted from memory**, and control returns to the **Global Context**.
+
+---
+
+## 🔁 How JavaScript Executes Code
+
+1. JavaScript first creates the **Global Execution Context**.
+2. It performs the **Memory Creation Phase**.
+3. Then runs code line-by-line (**Execution Phase**).
+4. When a function is called, a **new Function Execution Context** is created and pushed to the **Call Stack**.
+5. After the function finishes, it’s popped from the **Call Stack**.
+
+---
+
+# 🧱 Call Stack
+
+> The **Call Stack** keeps track of function execution order in JavaScript.
+
+It follows **LIFO (Last In, First Out)** —
+The last function pushed into the stack is the first to be popped out.
+
+---
+
+### Example
+
+```js
+function one() {
+  console.log("Inside One");
+  two();
+}
+
+function two() {
+  console.log("Inside Two");
+  three();
+}
+
+function three() {
+  console.log("Inside Three");
+}
+
+one();
+```
+
+---
+
+### Execution Flow:
+
+1. **Global Execution Context** is created and pushed to the Call Stack.
+2. Function `one()` is invoked → a new FEC for `one` is pushed.
+3. Inside `one()`, `two()` is called → new FEC for `two` is pushed.
+4. Inside `two()`, `three()` is called → new FEC for `three` is pushed.
+5. Once `three()` completes → popped off the stack.
+6. Then `two()` completes → popped.
+7. Finally, `one()` completes → popped.
+8. The Global Context is popped last (when program ends).
+
+---
+
+### 🧠 Visual Representation
+
+```
+|             |
+|   three()   | ← pushed last
+|-------------|
+|    two()    |
+|-------------|
+|    one()    |
+|-------------|
+|   Global()  |
+|-------------|
+```
+
+➡️ Once `three()` finishes:
+
+```
+|             |
+|    two()    |
+|-------------|
+|    one()    |
+|-------------|
+|   Global()  |
+|-------------|
+```
+
+➡️ When all are done:
+
+```
+|             |
+|-------------|
+|  (empty)    |
+```
+
+✅ The Call Stack is now empty — JavaScript finishes execution.
+
+---
+
+## 🧠 Key Points to Remember
+
+* JS is **single-threaded** → one call stack → one task at a time.
+* **Execution Context** = Memory + Code Execution.
+* **Global Context** → created first, destroyed last.
+* **Function Contexts** → created per call, destroyed after return.
+* Call Stack follows **LIFO**.
+* **Hoisting** occurs during the memory creation phase.
+* **Nested functions** create nested execution contexts.
+
+---
+
+### ✅ Example Summary
+
+```js
+// Execution Order Visualization
+
+// Step 1: Global Context created
+// Step 2: one() pushed
+// Step 3: two() pushed
+// Step 4: three() pushed
+// Step 5: three() pops → two() pops → one() pops → Global Context ends
+```
+
+---
+
+## 🧩 Optional: How to View the Call Stack (in Browser)
+
+* Open Chrome DevTools → Sources → add a breakpoint.
+* Run the JS code.
+* See how the **Call Stack** builds up and clears step-by-step.
+
+---
+
+### ✅ Final Recap:
+
+| Concept               | Description                               |
+| --------------------- | ----------------------------------------- |
+| **Execution Context** | Environment where JS code runs            |
+| **Memory Phase**      | Variables & functions are hoisted         |
+| **Execution Phase**   | Code runs line by line                    |
+| **Call Stack**        | Tracks function execution in order (LIFO) |
+| **Single Threaded**   | JS executes one operation at a time       |
